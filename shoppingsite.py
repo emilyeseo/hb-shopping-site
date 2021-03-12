@@ -99,6 +99,8 @@ def add_to_cart(melon_id):
     else:
         session['cart'][melon_id] += 1
 
+    # melon = {melons.get_by_id(melon_id)}
+
     print(session['cart'])
 
     flash('You have added the melon to the cart')
