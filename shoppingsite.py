@@ -64,11 +64,34 @@ def show_shopping_cart():
     # TODO: Display the contents of the shopping cart.
 
     # The logic here will be something like:
-    #
+
     # - get the cart dictionary from the session
+    melon_cart = session['cart']
     # - create a list to hold melon objects and a variable to hold the total
     #   cost of the order
+    melon_list = []
+
+    # for mel in melon_id_list:
+    #     melon_list.append(melon_cart[mel])
+
+    order_total = 0
+
+    for mel_id in melon_cart:
+        melon_object = melons.get_by_id(mel_id)
+        qty = melon_cart[mel_id]
+        cost = qty * melon_object.price
+        order_total += cost
+        melon_object.quantity = qty
+        melon_object.cost = cost
+
+        melon_list.append(melon_object)
+
+    return render_template("cart.html",
+                           melon_list=melon_list,
+                           order_total=order_total)
+
     # - loop over the cart dictionary, and for each melon id:
+
     #    - get the corresponding Melon object
     #    - compute the total cost for that type of melon
     #    - add this to the order total
@@ -79,7 +102,15 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
 
-    return render_template("cart.html")
+    # Information we need to return to the template:
+    # melon object (each item in the melon_cart)
+
+    # order total (total cost of everything)
+    # total cost (total of how much we're paying specifically for one melon type, add to object)
+    # quantity (how many of each melon, get from melon_cart value, add to object)
+
+    # Melon object = <Melon: cren, Crenshaw, $2.00>
+    # melon_cart[melon] = {melon: number of melons}
 
 
 @app.route("/add_to_cart/<melon_id>")
